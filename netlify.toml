@@ -20,5 +20,5 @@
     record = true
     
 [[redirects]]
-  from = "/products/"
+  from = "products"
   to = "https://www.google.co.in/"
