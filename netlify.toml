@@ -19,8 +19,8 @@
   [plugins.inputs]
     record = true
 [[redirects]]
-  from = "/products"
-  to = "/new-path"
+  from = "/products/"
+  to = "google.com"
   status = 301
   force = false
   query = {path = ":path"} #  apply this rule for /old-path?path=example
