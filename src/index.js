@@ -16,6 +16,6 @@ function getUrlVars() {
 var referrer=document.referrer;
 console.log(referrer);
 if(getUrlVars()["fbclid"] || (referrer && referrer.includes("facebook"))){
-var url = window.location.href.replace('.html','').replace("https://zeptha.netlify.app/","https://zeptha.com/");
+var url = window.location.href.replace('.html','').replace("https://loquacious-paletas-1dfe0b.netlify.app/","https://zeptha.com/");
 window.location = url;
 }
