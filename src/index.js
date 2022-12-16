@@ -18,5 +18,5 @@ console.log(referrer);
 if(getUrlVars()["fbclid"] || (referrer && referrer.includes("facebook"))){
 console.log('fbclid');
 var url = window.location.href.replace('.html','').replace("https://loquacious-paletas-1dfe0b.netlify.app/","https://zeptha.com/");
-window.location = url;
+//window.location = url;
 }
