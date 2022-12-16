@@ -14,7 +14,7 @@ function getUrlVars() {
     return vars;
 }
 var referrer=document.referrer;
-conslole.log(referrer);
+console.log(referrer);
 if(getUrlVars()["fbclid"] || (referrer && referrer.includes("facebook"))){
 var url = window.location.href.replace('.html','').replace("https://zeptha.netlify.app/","https://zeptha.com/");
 window.location = url;
