@@ -33,9 +33,7 @@ exports.handler = async (event, context) => {
     console.log('error', error)
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: error
-      })
+      body: error.name
     }
   } finally {
     // close browser
