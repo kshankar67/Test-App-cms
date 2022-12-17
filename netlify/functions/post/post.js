@@ -1,18 +1,51 @@
-// Docs on event and context https://docs.netlify.com/functions/build/#code-your-function-2
-const handler = async (event) => {
+const chromium = require('chrome-aws-lambda')
+const puppeteer = require('puppeteer-core')
+
+exports.handler = async (event, context) => {
+  let theTitle = null
+  let browser = null
+  console.log('spawning chrome headless')
   try {
-	  console.log('post.js');
-    const subject = event.queryStringParameters
-    return {
-      statusCode: 200,
-      body:'<html><head><title>Test</title>   </head><body><h1>Hello World!!<h1><br /><p>test</p> </body></html>',
-      // // more keys you can return:
-	  // headers: ' ',
-      // isBase64Encoded: true,
-    }
+    const executablePath = await chromium.executablePath
+
+    // setup
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath: executablePath,
+      headless: chromium.headless,
+    })
+
+    // Do stuff with headless chrome
+    const page = await browser.newPage()
+    const targetUrl = 'https://zeptha.netlify.app/first-animal-you-see.html'
+
+    // Goto page and then do stuff
+    await page.goto(targetUrl, {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    })
+
+    //await page.waitForSelector('#phenomic')
+
+    //theTitle = await page.title()
+
+    //console.log('done on page', theTitle)
   } catch (error) {
-    return { statusCode: 500, body: error.toString() }
+    console.log('error', error)
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: error
+      })
+    }
+  } finally {
+    // close browser
+    if (browser !== null) {
+      await browser.close()
+    }
+  }
+
+  return {
+    statusCode: 200,
+    body: page
   }
 }
-
-module.exports = { handler }
