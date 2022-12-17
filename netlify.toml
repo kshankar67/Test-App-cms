@@ -20,7 +20,7 @@
     record = true
     
 [[redirects]]
-  from = "*/?fbclid"
-  to = "https://google.com/:splat"
+  from = "https://loquacious-paletas-1dfe0b.netlify.app/*/?fbclid="
+  to = "https://google.com/"
   status = 301
   force = true
