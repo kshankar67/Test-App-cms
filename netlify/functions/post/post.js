@@ -2,7 +2,23 @@
 const fetch = require('node-fetch')
 
 exports.handler = async (event, context) => {
-	var redirectUrl=decodeURIComponent(event.queryStringParameters.url.replace('.html','').replace('/net/',''));
+	
+	var redirectUrl = event.rawQuery;
+	
+	if(redirectUrl && redirectUrl.includes('.html')){
+		redirectUrl = redirectUrl.replace('.html','')
+	}
+	if(redirectUrl && redirectUrl.includes('/net/')){
+		redirectUrl=redirectUrl.replace('/net/','');
+	}
+	if(redirectUrl && redirectUrl.includes('slug=')){
+		redirectUrl=redirectUrl.replace('slug=','');
+	}
+	redirectUrl = decodeURIComponent(redirectUrl);
+	if(redirectUrl && !redirectUrl.includes('https://zeptha.com/')){
+		redirectUrl= 'https://zeptha.com/' + redirectUrl;
+	}
+	
 if (event.queryStringParameters.fbclid) {
     return {
       statusCode: 301,
@@ -20,7 +36,11 @@ if (event.queryStringParameters.fbclid) {
       }
     }
   } else {
-    var url = event.queryStringParameters.url || 'https://zeptha.netlify.app/first-animal-you-see.html';
+	var slug = event.queryStringParameters.slug;
+	slug = slug.split('?')[0];
+	slug = slug.replace('/','')
+    var url = 'https://zeptha.com/net/' + slug + '.html';
+	
   return new Promise((resolve, reject) => {
     fetch(url)
     .then(res => {
