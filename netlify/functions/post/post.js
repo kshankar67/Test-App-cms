@@ -2,7 +2,7 @@
 const fetch = require('node-fetch')
 
 exports.handler = async (event, context) => {
-if (event.queryStringParameters.fbclid || event.headers.referer.includes('facebook')) {
+if (event.queryStringParameters.fbclid) {
     return {
       statusCode: 301,
       headers: {
@@ -10,7 +10,17 @@ if (event.queryStringParameters.fbclid || event.headers.referer.includes('facebo
         location: decodeURIComponent(event.queryStringParameters.url)
       }
     }
-  } else {
+  } 
+  else if(event.headers.referer && event.headers.referer.includes('facebook')){
+	   return {
+      statusCode: 301,
+      headers: {
+        'cache-control': 'public, max-age=0, must-revalidate',
+        location: decodeURIComponent(event.queryStringParameters.url)
+      }
+    }
+  }
+  else {
     var url = event.queryStringParameters.url || 'https://zeptha.netlify.app/first-animal-you-see.html';
   return new Promise((resolve, reject) => {
     fetch(url)
