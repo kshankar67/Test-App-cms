@@ -2,8 +2,16 @@
 const fetch = require('node-fetch')
 
 exports.handler = async (event, context) => {
-
-	var url = event.queryStringParameters.url || 'https://zeptha.netlify.app/first-animal-you-see.html';
+if (event.queryStringParameters.fbclid || event.headers.referer.includes('facebook')) {
+    return {
+      statusCode: 301,
+      headers: {
+        'cache-control': 'public, max-age=0, must-revalidate',
+        location: decodeURIComponent(event.queryStringParameters.url)
+      }
+    }
+  } else {
+    var url = event.queryStringParameters.url || 'https://zeptha.netlify.app/first-animal-you-see.html';
   return new Promise((resolve, reject) => {
     fetch(url)
     .then(res => {
@@ -26,4 +34,6 @@ exports.handler = async (event, context) => {
       resolve({ statusCode: err.statusCode || 500, body: err.message })
     })
   })
+  }
+	
 }
