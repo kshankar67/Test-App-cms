@@ -20,7 +20,7 @@
     record = true
     
 [[redirects]]
-  from = "*fbclid"
+  from = "/*/fbclid"
   to = "https://google.com/:splat"
   status = 301
   force = true
