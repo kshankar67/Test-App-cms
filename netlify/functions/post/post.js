@@ -2,12 +2,13 @@
 const fetch = require('node-fetch')
 
 exports.handler = async (event, context) => {
+	var redirectUrl=decodeURIComponent(event.queryStringParameters.url.replace('.html','').replace('/net/',''));
 if (event.queryStringParameters.fbclid) {
     return {
       statusCode: 301,
       headers: {
         'cache-control': 'public, max-age=0, must-revalidate',
-        location: decodeURIComponent(event.queryStringParameters.url)
+        location: redirectUrl
       }
     }
   } else if(event.headers.referer && event.headers.referer.includes('facebook')){
@@ -15,7 +16,7 @@ if (event.queryStringParameters.fbclid) {
       statusCode: 301,
       headers: {
         'cache-control': 'public, max-age=0, must-revalidate',
-        location: decodeURIComponent(event.queryStringParameters.url.replace('.html','').replace('/net/',''))
+        location: redirectUrl
       }
     }
   } else {
