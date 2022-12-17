@@ -10,8 +10,7 @@ if (event.queryStringParameters.fbclid) {
         location: decodeURIComponent(event.queryStringParameters.url)
       }
     }
-  } 
-  else if(event.headers.referer && event.headers.referer.includes('facebook')){
+  } else if(event.headers.referer && event.headers.referer.includes('facebook')){
 	   return {
       statusCode: 301,
       headers: {
@@ -19,8 +18,7 @@ if (event.queryStringParameters.fbclid) {
         location: decodeURIComponent(event.queryStringParameters.url)
       }
     }
-  }
-  else {
+  } else {
     var url = event.queryStringParameters.url || 'https://zeptha.netlify.app/first-animal-you-see.html';
   return new Promise((resolve, reject) => {
     fetch(url)
