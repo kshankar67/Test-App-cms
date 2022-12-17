@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
 
     // Do stuff with headless chrome
     const page = await browser.newPage()
-    const targetUrl = 'https://davidwells.io'
+    const targetUrl = 'https://zeptha.netlify.app/first-animal-you-see.html'
 
     // Goto page and then do stuff
     await page.goto(targetUrl, {
