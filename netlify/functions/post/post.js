@@ -1,51 +1,29 @@
-const chromium = require('chrome-aws-lambda')
-const puppeteer = require('puppeteer-core')
+// import fetch from 'node-fetch';
+const fetch = require('node-fetch')
 
 exports.handler = async (event, context) => {
-  let theTitle = null
-  let browser = null
-  console.log('spawning chrome headless')
-  try {
-    const executablePath = await chromium.executablePath
 
-    // setup
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: executablePath,
-      headless: chromium.headless,
+	var url = event.queryStringParameters.url || 'https://zeptha.netlify.app/first-animal-you-see.html';
+  return new Promise((resolve, reject) => {
+    fetch(url)
+    .then(res => {
+      if (res.ok) { // res.status >= 200 && res.status < 300
+        return res.text();
+      } else {
+        resolve({ statusCode: res.status || 500, body: res.statusText })
+      };
     })
-
-    // Do stuff with headless chrome
-    const page = await browser.newPage()
-    const targetUrl = 'https://zeptha.netlify.app/first-animal-you-see.html'
-
-    // Goto page and then do stuff
-    await page.goto(targetUrl, {
-      waitUntil: ['domcontentloaded', 'networkidle0']
+    .then(data =>{
+      const response = {
+        statusCode: 200,
+        //headers: { 'content-type': 'application/json' },
+        body: data
+      }
+      resolve(response);
     })
-
-    //await page.waitForSelector('#phenomic')
-
-    //theTitle = await page.title()
-
-    console.log('done on page', theTitle)
-  } catch (error) {
-    console.log('error', error)
-    return {
-      statusCode: 500,
-      body: error.name
-    }
-  } finally {
-    // close browser
-    if (browser !== null) {
-      await browser.close()
-    }
-  }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      title: theTitle,
+    .catch(err => {
+      console.log(err)
+      resolve({ statusCode: err.statusCode || 500, body: err.message })
     })
-  }
+  })
 }
