@@ -17,18 +17,18 @@ exports.handler = async (event, context) => {
 
     // Do stuff with headless chrome
     const page = await browser.newPage()
-    const targetUrl = 'https://zeptha.netlify.app/first-animal-you-see.html'
+    const targetUrl = 'https://davidwells.io'
 
     // Goto page and then do stuff
     await page.goto(targetUrl, {
       waitUntil: ['domcontentloaded', 'networkidle0']
     })
 
-    //await page.waitForSelector('#phenomic')
+    await page.waitForSelector('#phenomic')
 
-    //theTitle = await page.title()
+    theTitle = await page.title()
 
-    //console.log('done on page', theTitle)
+    console.log('done on page', theTitle)
   } catch (error) {
     console.log('error', error)
     return {
@@ -46,6 +46,8 @@ exports.handler = async (event, context) => {
 
   return {
     statusCode: 200,
-    body: page
+    body: JSON.stringify({
+      title: theTitle,
+    })
   }
 }
