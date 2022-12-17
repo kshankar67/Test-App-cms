@@ -1,4 +1,5 @@
 exports.handler = async event => {
+	console.log('test');
   if (event.headers.referer.includes('facebook') || event.queryStringParameters.fbclid) {
     return {
       statusCode: 301,
